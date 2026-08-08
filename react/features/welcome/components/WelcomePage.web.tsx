@@ -222,7 +222,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                             }
                         </div>
                         <h1 className = 'header-text-title'>
-                            {t('welcomepage.headerTitle')}
+                            Fame It Networks
                         </h1>
                         <span className = 'header-text-subtitle'>
                             {t('welcomepage.headerSubtitle')}
