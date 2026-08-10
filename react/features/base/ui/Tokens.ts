@@ -6,7 +6,7 @@ export const colorMap = {
     // Default page background. If this changes, make sure to adapt the native side as well:
     //  - JitsiMeetView.m
     //  - JitsiMeetView.java
-    uiBackground: 'surface01',
+    uiBackground: '#041c33',
 
     // Container backgrounds (legacy tokens)
     ui01: 'surface02',
@@ -51,23 +51,23 @@ export const colorMap = {
     // ----- Semantic Tokens (component-based, backwards compatible) -----
 
     // Dialog/Modal Components
-    dialogBackground: 'surface02',      // Main dialog background (same as ui01)
-    dialogOverlay: 'surface03',         // Overlay/backdrop (same as ui02)
-    dialogBorder: 'ui02',               // Dialog borders
+    dialogBackground: '#0b3557',        // Fame navy dialog background
+    dialogOverlay: 'rgba(4, 28, 51, 0.82)', // Branded overlay/backdrop
+    dialogBorder: '#1a5b83',            // Dialog borders
     dialogText: 'textColor01',          // Primary dialog text (same as text01)
     dialogSecondaryText: 'textColor02', // Secondary dialog text (same as text02)
 
     // Large Video
-    largeVideoBackground: 'surface03',  // Main video area background (same as ui02)
-    largeVideoPlaceholder: 'surface03', // Placeholder when no video (same as ui02)
+    largeVideoBackground: '#041c33',    // Main video area background
+    largeVideoPlaceholder: '#072b49',   // Placeholder when no video
 
     // Filmstrip
-    filmstripBackground: 'surface03',   // Filmstrip container background (same as ui02)
+    filmstripBackground: '#072b49',     // Filmstrip container background
     filmstripBackgroundHover: 'uiBackground', // Filmstrip background on hover/focus
     filmstripDragHandle: 'icon02',      // Filmstrip resize drag handle color
     filmstripDragHandleHover: 'icon01', // Filmstrip resize drag handle hover color
-    thumbnailBackground: 'surface03',   // Individual thumbnail background (same as ui02)
-    thumbnailBorder: 'ui03',            // Thumbnail borders (same as ui03)
+    thumbnailBackground: '#0b3557',     // Individual thumbnail background
+    thumbnailBorder: '#08a4d8',         // Thumbnail borders
     thumbnailHover: 'hover05',          // Thumbnail hover state (same as action03Hover)
     thumbnailTintBackground: 'uiBackground', // Thumbnail tint overlay background
     thumbnailRaisedHandIcon: 'uiBackground', // Thumbnail raised hand indicator icon
@@ -96,24 +96,24 @@ export const colorMap = {
     chatTimestamp: 'ui03',                    // Chat timestamp text
 
     // Toolbox/Toolbar
-    toolboxBackground: 'surface02',     // Main toolbox background
-    drawerBackground: 'surface02',      // Drawer/side panel background
-    toolboxIconHover: 'surface05',      // Toolbox icon hover background
-    toolboxIconActive: 'ui02',          // Toolbox icon active/pressed background
-    toolboxIconToggled: 'ui02',         // Toolbox icon toggled background
-    toolbarButton: 'action01',          // Toolbar button color
-    toolbarButtonHover: 'hover01',      // Toolbar button hover (same as action01Hover)
-    toolbarButtonActive: 'active01',    // Toolbar button active/pressed state
+    toolboxBackground: '#104875',       // Fame navy toolbox background
+    drawerBackground: '#0b3557',        // Drawer/side panel background
+    toolboxIconHover: '#14608f',        // Toolbox icon hover background
+    toolboxIconActive: '#08a4d8',       // Toolbox icon active/pressed background
+    toolboxIconToggled: '#08a4d8',      // Toolbox icon toggled background
+    toolbarButton: '#104875',           // Toolbar button color
+    toolbarButtonHover: '#14608f',      // Toolbar button hover
+    toolbarButtonActive: '#08a4d8',     // Toolbar button active/pressed state
     toolbarIcon: 'icon01',              // Toolbar icon color
     toolbarIconHover: 'icon01',         // Toolbar icon hover state
-    toolbarIconActive: 'action01',      // Toolbar icon active/toggled state
+    toolbarIconActive: '#ffb000',       // Toolbar icon active/toggled state
 
     // Overflow Menu (More Actions)
-    overflowMenuBackground: 'surface02',  // Overflow menu background
-    overflowMenuBorder: 'surface05',      // Overflow menu border
+    overflowMenuBackground: '#0b3557',    // Overflow menu background
+    overflowMenuBorder: '#1a5b83',        // Overflow menu border
     overflowMenuItemText: 'text01',       // Overflow menu item text
     overflowMenuItemIcon: 'text01',       // Overflow menu item icon
-    overflowMenuItemHover: 'surface03',   // Overflow menu item hover background
+    overflowMenuItemHover: '#104875',     // Overflow menu item hover background
     overflowMenuItemDisabled: 'text03',   // Overflow menu item disabled text/icon
     overflowMenuSeparator: 'ui03',        // Overflow menu group separator
 
@@ -152,23 +152,23 @@ export const colorMap = {
     speakerStatsAvatarLeft: 'surface05',   // Avatar background for participants who left
 
     // Pre-meeting/Prejoin
-    preMeetingBackground: 'surface02',  // Pre-meeting screen container background
-    preMeetingPreview: 'ui01',          // Video preview in pre-meeting
-    prejoinDialogBackground: 'uiBackground', // Prejoin dialog background
-    prejoinPreviewBackground: 'uiBackground', // Prejoin video preview background (#040404)
-    prejoinDialogDelimiter: 'ui03',     // Prejoin dialog delimiter line
+    preMeetingBackground: '#072b49',    // Pre-meeting screen container background
+    preMeetingPreview: '#041c33',       // Video preview in pre-meeting
+    prejoinDialogBackground: '#072b49', // Prejoin dialog background
+    prejoinPreviewBackground: '#041c33', // Prejoin video preview background
+    prejoinDialogDelimiter: '#1a5b83',  // Prejoin dialog delimiter line
     prejoinDialogDelimiterText: 'text01', // Prejoin dialog delimiter text
     prejoinTitleText: 'text01',         // Prejoin title text color
     prejoinRoomNameText: 'text01',      // Prejoin room name text color
     prejoinWarningBackground: 'warning01', // Warning banner background
     prejoinWarningText: 'text04',       // Warning banner text
     prejoinRecordingWarningText: 'text03', // Recording warning text
-    prejoinActionButtonPrimary: 'action01', // Primary action button
-    prejoinActionButtonPrimaryHover: 'action01Hover', // Primary button hover
+    prejoinActionButtonPrimary: '#08a4d8', // Primary action button
+    prejoinActionButtonPrimaryHover: '#078bb8', // Primary button hover
     prejoinActionButtonPrimaryText: 'text01', // Primary button text
-    prejoinActionButtonSecondary: 'action02', // Secondary action button
-    prejoinActionButtonSecondaryHover: 'action02Hover', // Secondary button hover
-    prejoinActionButtonSecondaryText: 'text04', // Secondary button text
+    prejoinActionButtonSecondary: '#104875', // Secondary action button
+    prejoinActionButtonSecondaryHover: '#14608f', // Secondary button hover
+    prejoinActionButtonSecondaryText: '#ffffff', // Secondary button text
     prejoinActionButtonDanger: 'actionDanger', // Danger button (leave)
     prejoinActionButtonDisabled: 'disabled01', // Disabled button
     prejoinCountryPickerBackground: 'ui01', // Country picker background

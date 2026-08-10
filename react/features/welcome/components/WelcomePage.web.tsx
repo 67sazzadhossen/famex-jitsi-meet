@@ -2,15 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { isMobileBrowser } from '../../base/environment/utils';
-import { translate, translateToHTML } from '../../base/i18n/functions';
+import { translate } from '../../base/i18n/functions';
 import Icon from '../../base/icons/components/Icon';
-import { IconWarning } from '../../base/icons/svg';
-import Watermarks from '../../base/react/components/web/Watermarks';
+import { IconPhoneRinging, IconWarning } from '../../base/icons/svg';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.web';
 import CalendarList from '../../calendar-sync/components/CalendarList.web';
 import RecentList from '../../recent-list/components/RecentList.web';
-import SettingsButton from '../../settings/components/web/SettingsButton';
-import { SETTINGS_TABS } from '../../settings/constants';
 
 import { AbstractWelcomePage, IProps, _mapStateToProps } from './AbstractWelcomePage';
 import Tabs from './Tabs';
@@ -188,115 +185,51 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {ReactElement|null}
      */
     override render() {
-        const { _moderatedRoomServiceUrl, t } = this.props;
-        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
-        const showAdditionalCard = this._shouldShowAdditionalCard();
-        const showAdditionalContent = this._shouldShowAdditionalContent();
-        const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
-        const contentClassName = showAdditionalContent ? 'with-content' : 'without-content';
+        const { t } = this.props;
+        const { DISPLAY_WELCOME_FOOTER } = interfaceConfig;
         const footerClassName = DISPLAY_WELCOME_FOOTER ? 'with-footer' : 'without-footer';
 
         return (
             <div
-                className = { `welcome ${contentClassName} ${footerClassName}` }
+                className = { `welcome without-content ${footerClassName}` }
                 id = 'welcome_page'>
+                <nav className = 'welcome-navbar'>
+                    <div className = 'welcome-navbar-content'>
+                        <a
+                            aria-label = 'Fame IT Networks home'
+                            className = 'welcome-navbar-logo'
+                            href = 'https://famenetworks.net/'>
+                            <img
+                                alt = 'Fame IT Networks'
+                                src = 'https://famenetworks.net/logo.svg' />
+                        </a>
+                        <div className = 'welcome-navbar-actions'>
+                            <a
+                                className = 'welcome-navbar-phone'
+                                href = 'tel:4696611200'>
+                                <span className = 'welcome-navbar-phone-icon'>
+                                    <Icon src = { IconPhoneRinging } />
+                                </span>
+                                <span>469-661-1200</span>
+                            </a>
+                            <a
+                                className = 'welcome-navbar-quote'
+                                href = 'https://famenetworks.net/contact'>
+                                Get a Quote
+                            </a>
+                        </div>
+                    </div>
+                </nav>
                 <div className = 'header'>
                     <div className = 'header-image' />
                     <div className = 'header-container'>
-                        <div className = 'header-watermark-container'>
-                            <div className = 'welcome-watermark'>
-                                <Watermarks
-                                    defaultJitsiLogoURL = { DEFAULT_WELCOME_PAGE_LOGO_URL }
-                                    noMargins = { true } />
-                            </div>
-                        </div>
-                        <div className = 'welcome-page-settings'>
-                            <SettingsButton
-                                defaultTab = { SETTINGS_TABS.CALENDAR }
-                                isDisplayedOnWelcomePage = { true } />
-                            {showAdditionalToolbarContent
-                                ? <div
-                                    className = 'settings-toolbar-content'
-                                    ref = { this._setAdditionalToolbarContentRef } />
-                                : null
-                            }
-                        </div>
                         <h1 className = 'header-text-title'>
                             Fame It Networks
                         </h1>
                         <span className = 'header-text-subtitle'>
                             {t('welcomepage.headerSubtitle')}
                         </span>
-                        <div id = 'enter_room'>
-                            <div className = 'join-meeting-container'>
-                                <div className = 'enter-room-input-container'>
-                                    <form onSubmit = { this._onFormSubmit }>
-                                        <input
-                                            aria-disabled = 'false'
-                                            aria-label = 'Meeting name input'
-                                            autoFocus = { true }
-                                            className = 'enter-room-input'
-                                            id = 'enter_room_field'
-                                            onChange = { this._onRoomChange }
-                                            pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
-                                            placeholder = { this.state.roomPlaceholder }
-                                            ref = { this._setRoomInputRef }
-                                            type = 'text'
-                                            value = { this.state.room } />
-                                    </form>
-                                </div>
-
-                                <button
-                                    aria-disabled = 'false'
-                                    aria-label = 'Start meeting'
-                                    className = 'welcome-page-button'
-                                    id = 'enter_room_button'
-                                    onClick = { this._onFormSubmit }
-                                    tabIndex = { 0 }
-                                    type = 'button'>
-                                    {t('welcomepage.startMeeting')}
-                                </button>
-                            </div>
-                        </div>
-                        {this._titleHasNotAllowCharacter && (
-                            <div
-                                className = 'not-allow-title-character-div'
-                                role = 'alert'>
-                                <Icon src = { IconWarning } />
-                                <span className = 'not-allow-title-character-text'>
-                                    {t('welcomepage.roomNameAllowedChars')}
-                                </span>
-                            </div>
-                        )}
-                        {this._renderInsecureRoomNameWarning()}
-
-                        {_moderatedRoomServiceUrl && (
-                            <div id = 'moderated-meetings'>
-                                {
-                                    translateToHTML(
-                                        t, 'welcomepage.moderatedMessage', { url: _moderatedRoomServiceUrl })
-                                }
-                            </div>)}
                     </div>
-                </div>
-
-                <div className = 'welcome-cards-container'>
-                    <div className = 'welcome-card-column'>
-                        <div className = 'welcome-tabs welcome-card welcome-card--blue'>
-                            {this._renderTabs()}
-                        </div>
-                        {showAdditionalCard
-                            ? <div
-                                className = 'welcome-card welcome-card--dark'
-                                ref = { this._setAdditionalCardRef } />
-                            : null}
-                    </div>
-
-                    {showAdditionalContent
-                        ? <div
-                            className = 'welcome-page-content'
-                            ref = { this._setAdditionalContentRef } />
-                        : null}
                 </div>
                 {DISPLAY_WELCOME_FOOTER && this._renderFooter()}
             </div>
@@ -360,53 +293,29 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {ReactElement}
      */
     _renderFooter() {
-        const {
-            t,
-            _deeplinkingCfg: {
-                ios = { downloadLink: undefined },
-                android = {
-                    fDroidUrl: undefined,
-                    downloadLink: undefined
-                }
-            }
-        } = this.props;
-
-        const { downloadLink: iosDownloadLink } = ios;
-
-        const { fDroidUrl, downloadLink: androidDownloadLink } = android;
-
         return (<footer className = 'welcome-footer'>
             <div className = 'welcome-footer-centered'>
-                <div className = 'welcome-footer-padded'>
-                    <div className = 'welcome-footer-row-block welcome-footer--row-1'>
-                        <div className = 'welcome-footer-row-1-text'>{t('welcomepage.jitsiOnMobile')}</div>
-                        <a
-                            className = 'welcome-badge'
-                            href = { iosDownloadLink }
-                            rel = 'noopener noreferrer'
-                            target = '_blank'>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkIos') }
-                                src = './images/app-store-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { androidDownloadLink }
-                            rel = 'noopener noreferrer'
-                            target = '_blank'>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkAndroid') }
-                                src = './images/google-play-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { fDroidUrl }
-                            rel = 'noopener noreferrer'
-                            target = '_blank'>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkFDroid') }
-                                src = './images/f-droid-badge.png' />
-                        </a>
+                <div className = 'welcome-video-call-section'>
+                    <div className = 'welcome-video-call-copy'>
+                        <span className = 'welcome-video-call-eyebrow'>FAME IT NETWORKS</span>
+                        <h2>Connect clearly. Collaborate anywhere.</h2>
+                        <p>
+                            Fast, reliable video meetings built to keep your team connected—right from your browser.
+                        </p>
+                    </div>
+                    <div className = 'welcome-video-call-features'>
+                        <div className = 'welcome-video-call-feature'>
+                            <span className = 'welcome-video-call-feature-dot' />
+                            HD Video
+                        </div>
+                        <div className = 'welcome-video-call-feature'>
+                            <span className = 'welcome-video-call-feature-dot' />
+                            Secure Meetings
+                        </div>
+                        <div className = 'welcome-video-call-feature'>
+                            <span className = 'welcome-video-call-feature-dot' />
+                            Screen Sharing
+                        </div>
                     </div>
                 </div>
             </div>

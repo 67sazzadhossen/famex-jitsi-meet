@@ -123,17 +123,43 @@ form {
 }
 
 .leftwatermark {
-    max-width: 140px;
-    max-height:70px;
+    height: 52px;
+    max-height: 52px;
+    max-width: 52px;
+    width: 52px;
     left: 32px;
     top: 32px;
-    background-position: center left;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 
     &.no-margin {
         left:0;
         top:0;
+    }
+
+    @media (max-width: 600px) {
+        height: 46px;
+        left: 16px;
+        max-height: 46px;
+        max-width: 46px;
+        top: 16px;
+        width: 46px;
+    }
+}
+
+div.leftwatermark {
+    background-color: #fff;
+    background-origin: content-box;
+    border: 2px solid #e3a63a;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 18, 35, 0.3);
+    box-sizing: border-box;
+    padding: 5px;
+
+    @media (max-width: 600px) {
+        border-radius: 12px;
+        padding: 4px;
     }
 }
 

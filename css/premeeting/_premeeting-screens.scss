@@ -1,4 +1,12 @@
 .premeeting-screen {
+    background: linear-gradient(145deg, #041c33 0%, #072b49 58%, #104875 100%);
+
+    > div:first-child {
+        background: linear-gradient(180deg, rgba(16, 72, 117, 0.98), rgba(4, 28, 51, 0.98));
+        border-right: 1px solid rgba(8, 164, 216, 0.3);
+        box-shadow: 16px 0 40px rgba(0, 18, 35, 0.25);
+    }
+
     .action-btn {
         border-radius: 6px;
         box-sizing: border-box;
@@ -15,13 +23,18 @@
         width: 100%;
 
         &.primary {
-            background: #0376DA;
-            border: 1px solid #0376DA;
+            background: #08a4d8;
+            border: 1px solid #08a4d8;
+
+            &:hover {
+                background: #078bb8;
+                border-color: #078bb8;
+            }
         }
 
         &.secondary {
-            background: #3D3D3D;
-            border: 1px solid transparent;
+            background: #104875;
+            border: 1px solid rgba(255, 255, 255, 0.16);
         }
 
         &.text {
@@ -106,7 +119,7 @@
 }
 
 #preview {
-    background: var(--prejoin-preview-background, #040404);
+    background: radial-gradient(circle at center, #104875 0%, var(--prejoin-preview-background, #041c33) 68%);
     display: flex;
     align-items: center;
     justify-content: center;
