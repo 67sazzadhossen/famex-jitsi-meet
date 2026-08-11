@@ -1,0 +1,69 @@
+name: Deploy production frontend
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: fame-meet-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and deploy
+    if: vars.PRODUCTION_AUTO_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production frontend
+        run: make
+
+      - name: Package and checksum deployment
+        run: deployment/build-web-artifact.sh "$RUNNER_TEMP/fame-meet-${GITHUB_SHA}.tar.gz"
+
+      - name: Configure SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_HOST_KEY: ${{ secrets.SSH_HOST_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          install -d -m 0700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 0600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
+          chmod 0644 ~/.ssh/known_hosts
+          ssh-keygen -F "$SSH_HOST" -f ~/.ssh/known_hosts >/dev/null
+
+      - name: Upload artifact
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          ssh -i ~/.ssh/deploy_key "fameit@$SSH_HOST" mkdir -p /home/fameit/fame-meet-deploy/incoming
+          scp -i ~/.ssh/deploy_key \
+            "$RUNNER_TEMP/fame-meet-${GITHUB_SHA}.tar.gz" \
+            "fameit@$SSH_HOST:/home/fameit/fame-meet-deploy/incoming/${GITHUB_SHA}.tar.gz"
+
+      - name: Deploy with backup and health check
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          ssh -i ~/.ssh/deploy_key "fameit@$SSH_HOST" \
+            "sudo -n /usr/local/sbin/fame-meet-deploy /home/fameit/fame-meet-deploy/incoming/${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"

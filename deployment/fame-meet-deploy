@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+readonly live_dir=/usr/share/jitsi-meet
+readonly state_dir=/var/lib/fame-meet-deploy
+readonly backup_dir="$state_dir/backups"
+readonly lock_file=/run/lock/fame-meet-deploy.lock
+readonly health_url=https://meet.famenetworks.net/
+
+fail() {
+    echo "ERROR: $*" >&2
+    exit 1
+}
+
+[[ $EUID -eq 0 ]] || fail "This command must run as root"
+[[ $# -eq 2 ]] || fail "Usage: fame-meet-deploy ARCHIVE COMMIT_SHA"
+
+archive=$(readlink -f "$1")
+commit=$2
+
+[[ $commit =~ ^[0-9a-f]{40}$ ]] || fail "Invalid commit SHA"
+[[ -f $archive ]] || fail "Artifact does not exist"
+[[ $archive == /home/fameit/fame-meet-deploy/incoming/* ]] \
+    || fail "Artifact must be inside /home/fameit/fame-meet-deploy/incoming"
+
+exec 9>"$lock_file"
+flock -n 9 || fail "Another deployment is running"
+
+work_dir=$(mktemp -d "$state_dir/work.XXXXXX")
+backup="$backup_dir/$(date -u +%Y%m%dT%H%M%SZ)-$commit.tar.gz"
+backup_stage="$work_dir/backup"
+trap 'rm -rf "$work_dir"' EXIT
+
+mkdir -p "$backup_dir"
+
+if tar -tzf "$archive" | grep -Eq '(^/|(^|/)\.\.(/|$))'; then
+    fail "Artifact contains an unsafe path"
+fi
+if tar -tvzf "$archive" | awk '{ print substr($1, 1, 1) }' | grep -qvE '^[-d]$'; then
+    fail "Artifact contains links or special files"
+fi
+
+tar -xzf "$archive" --no-same-owner --no-same-permissions -C "$work_dir"
+[[ -f "$work_dir/web/DEPLOYED_COMMIT" ]] || fail "Artifact has no commit marker"
+[[ $(<"$work_dir/web/DEPLOYED_COMMIT") == "$commit" ]] || fail "Artifact commit does not match"
+[[ -f "$work_dir/web/libs/app.bundle.min.js" ]] || fail "Artifact has no application bundle"
+[[ -f "$work_dir/web/css/all.css" ]] || fail "Artifact has no stylesheet"
+[[ -f "$work_dir/web/index.html" ]] || fail "Artifact has no index"
+
+mkdir -p "$backup_stage"
+for directory in css fonts images lang libs resources sounds static; do
+    cp -a "$live_dir/$directory" "$backup_stage/"
+done
+for file in "$live_dir"/*.html "$live_dir"/*.js "$live_dir/manifest.json"; do
+    [[ -f $file ]] && cp -a "$file" "$backup_stage/"
+done
+tar -C "$backup_stage" -czf "$backup" .
+
+rollback() {
+    echo "Deployment failed; restoring $backup" >&2
+    rollback_stage="$work_dir/rollback"
+    mkdir -p "$rollback_stage"
+    tar -xzf "$backup" --no-same-owner -C "$rollback_stage"
+    for directory in css fonts images lang libs resources sounds static; do
+        rsync -a --delete "$rollback_stage/$directory/" "$live_dir/$directory/"
+    done
+    rsync -a "$rollback_stage/"*.html "$live_dir/"
+    rsync -a "$rollback_stage/"*.js "$live_dir/"
+    rsync -a "$rollback_stage/manifest.json" "$live_dir/manifest.json"
+}
+trap rollback ERR
+
+for directory in css fonts images lang libs resources sounds static; do
+    rsync -a --delete "$work_dir/web/$directory/" "$live_dir/$directory/"
+done
+
+rsync -a "$work_dir/web/"*.html "$live_dir/"
+rsync -a "$work_dir/web/"*.js "$live_dir/"
+rsync -a "$work_dir/web/manifest.json" "$live_dir/manifest.json"
+install -o root -g root -m 0644 "$work_dir/web/DEPLOYED_COMMIT" "$state_dir/DEPLOYED_COMMIT"
+
+chown -R root:root "$live_dir"/{css,fonts,images,lang,libs,resources,sounds,static}
+find "$live_dir"/{css,fonts,images,lang,libs,resources,sounds,static} -type d -exec chmod 0755 {} +
+find "$live_dir"/{css,fonts,images,lang,libs,resources,sounds,static} -type f -exec chmod 0644 {} +
+
+nginx -t
+systemctl reload nginx
+curl --fail --silent --show-error --location --retry 3 --max-time 20 "$health_url" >/dev/null
+
+trap - ERR
+find "$backup_dir" -type f -name '*.tar.gz' -printf '%T@ %p\n' \
+    | sort -nr | tail -n +6 | cut -d' ' -f2- | xargs -r rm -f
+rm -f "$archive"
+
+echo "Successfully deployed $commit"
+sha256sum "$live_dir/libs/app.bundle.min.js" "$live_dir/index.html" "$live_dir/css/all.css"
