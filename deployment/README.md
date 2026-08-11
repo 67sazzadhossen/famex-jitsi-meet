@@ -14,19 +14,15 @@ git pull --ff-only
 sudo deployment/install-server-deployer.sh
 ```
 
-## GitHub production secrets
+## GitHub self-hosted runner
 
-Create a `production` environment and add:
-
-- `SSH_HOST`: the production server hostname or IP.
-- `SSH_PRIVATE_KEY`: a dedicated deployment private key.
-- `SSH_HOST_KEY`: the complete pinned `known_hosts` line for the server.
+Install a repository-level GitHub Actions runner on the production server as
+the `fameit` user. Give it the additional label `production`, and install it as
+a service so it reconnects after reboot. The runner only needs outbound HTTPS;
+no inbound SSH port or deployment secrets are required.
 
 Create the repository variable `PRODUCTION_AUTO_DEPLOY` with value `true` only
-after the server installer and all three secrets are ready. Until then, pushes
-skip the deployment job safely.
-
-Generate the host-key value from a trusted machine and verify its fingerprint
-against the server before saving it. Do not use `StrictHostKeyChecking=no`.
+after the server deployer and runner service are ready. Until then, pushes skip
+the deployment job safely.
 
 The workflow can also be started manually from the Actions page.

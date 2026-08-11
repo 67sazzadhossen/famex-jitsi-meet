@@ -16,9 +16,9 @@ jobs:
   deploy:
     name: Build and deploy
     if: vars.PRODUCTION_AUTO_DEPLOY == 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, production]
     environment: production
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Check out source
@@ -39,31 +39,14 @@ jobs:
       - name: Package and checksum deployment
         run: deployment/build-web-artifact.sh "$RUNNER_TEMP/fame-meet-${GITHUB_SHA}.tar.gz"
 
-      - name: Configure SSH
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_HOST_KEY: ${{ secrets.SSH_HOST_KEY }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Stage artifact locally
         run: |
-          install -d -m 0700 ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 0600 ~/.ssh/deploy_key
-          printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
-          chmod 0644 ~/.ssh/known_hosts
-          ssh-keygen -F "$SSH_HOST" -f ~/.ssh/known_hosts >/dev/null
-
-      - name: Upload artifact
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-        run: |
-          ssh -i ~/.ssh/deploy_key "fameit@$SSH_HOST" mkdir -p /home/fameit/fame-meet-deploy/incoming
-          scp -i ~/.ssh/deploy_key \
+          install -m 0600 \
             "$RUNNER_TEMP/fame-meet-${GITHUB_SHA}.tar.gz" \
-            "fameit@$SSH_HOST:/home/fameit/fame-meet-deploy/incoming/${GITHUB_SHA}.tar.gz"
+            "/home/fameit/fame-meet-deploy/incoming/${GITHUB_SHA}.tar.gz"
 
       - name: Deploy with backup and health check
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-        run: |
-          ssh -i ~/.ssh/deploy_key "fameit@$SSH_HOST" \
-            "sudo -n /usr/local/sbin/fame-meet-deploy /home/fameit/fame-meet-deploy/incoming/${GITHUB_SHA}.tar.gz ${GITHUB_SHA}"
+        run: >-
+          sudo -n /usr/local/sbin/fame-meet-deploy
+          "/home/fameit/fame-meet-deploy/incoming/${GITHUB_SHA}.tar.gz"
+          "${GITHUB_SHA}"
