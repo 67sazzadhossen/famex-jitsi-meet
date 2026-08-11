@@ -4,6 +4,7 @@ const CircularDependencyPlugin = require('circular-dependency-plugin');
 const fs = require('fs');
 const { join, resolve } = require('path');
 const process = require('process');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -108,6 +109,7 @@ function devServerProxyBypass({ path }) {
  */
 function getConfig(options = {}) {
     const { detectCircularDeps, isProduction } = options;
+    const lowMemoryBuild = Boolean(process.env.WEBPACK_LOW_MEMORY);
 
     return {
         devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -212,7 +214,10 @@ function getConfig(options = {}) {
         },
         optimization: {
             concatenateModules: isProduction,
-            minimize: isProduction
+            minimize: isProduction,
+            minimizer: isProduction && lowMemoryBuild
+                ? [ new TerserPlugin({ parallel: false }) ]
+                : undefined
         },
         output: {
             filename: `[name]${isProduction ? '.min' : ''}.js`,

@@ -35,7 +35,7 @@ jobs:
 
       - name: Build production frontend
         run: |
-          NODE_OPTIONS=--max-old-space-size=4608 \
+          WEBPACK_LOW_MEMORY=1 NODE_OPTIONS=--max-old-space-size=6144 \
             ./node_modules/.bin/webpack --progress --parallelism 1
           make deploy
 
