@@ -13,12 +13,11 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Build and deploy
+  build:
+    name: Build frontend
     if: vars.PRODUCTION_AUTO_DEPLOY == 'true'
-    runs-on: [self-hosted, linux, x64, production]
-    environment: production
-    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
 
     steps:
       - name: Check out source
@@ -34,13 +33,33 @@ jobs:
         run: npm ci
 
       - name: Build production frontend
-        run: |
-          WEBPACK_LOW_MEMORY=1 NODE_OPTIONS=--max-old-space-size=6144 \
-            ./node_modules/.bin/webpack --progress --parallelism 1
-          make deploy
+        run: make
 
       - name: Package and checksum deployment
         run: deployment/build-web-artifact.sh "$RUNNER_TEMP/fame-meet-${GITHUB_SHA}.tar.gz"
+
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: fame-meet-web-${{ github.sha }}
+          path: ${{ runner.temp }}/fame-meet-${{ github.sha }}.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+  deploy:
+    name: Deploy frontend
+    needs: build
+    runs-on: [self-hosted, linux, x64, production]
+    environment: production
+    timeout-minutes: 10
+
+    steps:
+      - name: Download deployment artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: fame-meet-web-${{ github.sha }}
+          path: ${{ runner.temp }}
 
       - name: Stage artifact locally
         run: |
