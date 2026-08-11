@@ -86,7 +86,8 @@ find "$live_dir"/{css,fonts,images,lang,libs,resources,sounds,static} -type f -e
 
 nginx -t
 systemctl reload nginx
-curl --fail --silent --show-error --location --retry 3 --max-time 20 "$health_url" >/dev/null
+curl --fail --silent --show-error --location --retry 3 --max-time 20 \
+    --resolve meet.famenetworks.net:443:127.0.0.1 "$health_url" >/dev/null
 
 trap - ERR
 find "$backup_dir" -type f -name '*.tar.gz' -printf '%T@ %p\n' \
