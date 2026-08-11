@@ -18,7 +18,7 @@ jobs:
     if: vars.PRODUCTION_AUTO_DEPLOY == 'true'
     runs-on: [self-hosted, linux, x64, production]
     environment: production
-    timeout-minutes: 45
+    timeout-minutes: 90
 
     steps:
       - name: Check out source
@@ -34,7 +34,10 @@ jobs:
         run: npm ci
 
       - name: Build production frontend
-        run: make
+        run: |
+          NODE_OPTIONS=--max-old-space-size=4608 \
+            ./node_modules/.bin/webpack --progress --parallelism 1
+          make deploy
 
       - name: Package and checksum deployment
         run: deployment/build-web-artifact.sh "$RUNNER_TEMP/fame-meet-${GITHUB_SHA}.tar.gz"

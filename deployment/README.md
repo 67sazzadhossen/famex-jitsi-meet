@@ -3,6 +3,8 @@
 Pushes to `master` build and deploy the web frontend to `meet.famenetworks.net`.
 The deployer backs up the current frontend, keeps the latest five backups, tests
 Nginx, performs an HTTPS health check, and rolls back if deployment fails.
+The production workflow runs Webpack compilations sequentially to keep peak
+memory within the production VM's available RAM and swap.
 
 ## One-time server setup
 
