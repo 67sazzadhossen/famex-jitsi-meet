@@ -76,7 +76,8 @@ function devServerProxyBypass({ path }) {
     // a file that only exists locally.
     tpath = tpath.replace(/^\/[^/]+\/static\//, '/static/');
 
-    if (tpath.startsWith('/css/')
+    if (tpath === '/interface_config.js'
+            || tpath.startsWith('/css/')
             || tpath.startsWith('/doc/')
             || tpath.startsWith('/fonts/')
             || tpath.startsWith('/images/')
