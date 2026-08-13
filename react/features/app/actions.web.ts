@@ -93,7 +93,10 @@ export function appNavigate(uri?: string) {
         dispatch(setConfig(config));
 
         if (room) {
-            const validationApiBaseUrl = config?.guestRoomValidationApiBaseUrl || '/api/v1';
+            // Keep guest validation on the platform API even if a stale or
+            // incomplete runtime config is served by the web host.
+            const validationApiBaseUrl = config?.guestRoomValidationApiBaseUrl
+                || 'https://meet-api.famenetworks.net/api/v1';
 
             try {
                 const validation = await validateGuestRoom(
