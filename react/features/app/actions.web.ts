@@ -11,7 +11,7 @@ import { loadConfig } from '../base/lib-jitsi-meet/functions.web';
 import { isEmbedded } from '../base/util/embedUtils';
 import { parseURIString } from '../base/util/uri';
 import { isVpaasMeeting } from '../jaas/functions';
-import { clearNotifications, showNotification } from '../notifications/actions';
+import { clearNotifications, showErrorNotification, showNotification } from '../notifications/actions';
 import { NOTIFICATION_TIMEOUT_TYPE } from '../notifications/constants';
 import { isWelcomePageEnabled } from '../welcome/functions';
 
@@ -22,6 +22,7 @@ import {
     reloadWithStoredParams
 } from './actions.any';
 import { getDefaultURL, getName } from './functions.web';
+import { validateGuestRoom } from './guestRoomValidation';
 import logger from './logger';
 import { IStore } from './types';
 
@@ -63,7 +64,7 @@ export function appNavigate(uri?: string) {
 
         location.protocol || (location.protocol = 'https:');
 
-        const { room } = location;
+        let { room } = location;
         const locationURL = new URL(location.toString());
 
         // There are notifications now that gets displayed after we technically left
@@ -90,6 +91,40 @@ export function appNavigate(uri?: string) {
         }
 
         dispatch(setConfig(config));
+
+        if (room) {
+            const validationApiBaseUrl = config?.guestRoomValidationApiBaseUrl;
+
+            if (!validationApiBaseUrl) {
+                logger.error('Guest room validation API is not configured');
+                dispatch(showErrorNotification({
+                    description: 'Meeting validation is not configured. Please contact support.',
+                    title: 'Unable to join meeting'
+                }));
+                dispatch(setRoom(undefined));
+
+                return;
+            }
+
+            try {
+                const validation = await validateGuestRoom(
+                    validationApiBaseUrl,
+                    room,
+                    config.guestRoomValidationTimeoutMs);
+
+                room = validation.jitsiRoomName;
+            } catch (error) {
+                logger.warn('Guest room validation rejected the meeting link', error);
+                dispatch(showErrorNotification({
+                    description: error instanceof Error ? error.message : 'This meeting link is unavailable.',
+                    title: 'Unable to join meeting'
+                }));
+                dispatch(setRoom(undefined));
+
+                return;
+            }
+        }
+
         dispatch(setRoom(room));
     };
 }
