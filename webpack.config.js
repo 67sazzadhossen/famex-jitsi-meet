@@ -66,6 +66,7 @@ function getBundleAnalyzerPlugin(analyzeBundle, name) {
  */
 function devServerProxyBypass({ path }) {
     let tpath = path;
+    const pathname = tpath.split('?')[0];
 
     if (tpath.startsWith('/v1/_cdn/')) {
         // The CDN is not available in the dev server, so we need to bypass it.
@@ -78,8 +79,8 @@ function devServerProxyBypass({ path }) {
     // a file that only exists locally.
     tpath = tpath.replace(/^\/[^/]+\/static\//, '/static/');
 
-    if (tpath === '/config.js'
-            || tpath.endsWith('/config.js')) {
+    if (pathname === '/config.js'
+            || pathname.endsWith('/config.js')) {
         return '/config.js';
     }
 
