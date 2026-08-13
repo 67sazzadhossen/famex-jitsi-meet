@@ -79,7 +79,11 @@ function devServerProxyBypass({ path }) {
     tpath = tpath.replace(/^\/[^/]+\/static\//, '/static/');
 
     if (tpath === '/config.js'
-            || tpath === '/interface_config.js'
+            || tpath.endsWith('/config.js')) {
+        return '/config.js';
+    }
+
+    if (tpath === '/interface_config.js'
             || tpath.startsWith('/css/')
             || tpath.startsWith('/doc/')
             || tpath.startsWith('/fonts/')
