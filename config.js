@@ -27,7 +27,7 @@ var enableJaaS = false;
 var config = {
     // Required for guest meeting links. The visible URL contains the public room UUID;
     // only a successful backend validation resolves it to the private Jitsi room name.
-    guestRoomValidationApiBaseUrl: 'http://localhost:5000/api/v1',
+    guestRoomValidationApiBaseUrl: '/api/v1',
     guestRoomValidationTimeoutMs: 8000,
 
     // Connection

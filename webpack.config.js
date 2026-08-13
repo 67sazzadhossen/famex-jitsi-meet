@@ -13,6 +13,8 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
  */
 const devServerProxyTarget
     = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://alpha.jitsi.net';
+const guestRoomValidationProxyTarget
+    = process.env.GUEST_ROOM_VALIDATION_PROXY_TARGET || 'http://localhost:5000';
 
 /**
  * Build a Performance configuration object for the given size.
@@ -76,7 +78,8 @@ function devServerProxyBypass({ path }) {
     // a file that only exists locally.
     tpath = tpath.replace(/^\/[^/]+\/static\//, '/static/');
 
-    if (tpath === '/interface_config.js'
+    if (tpath === '/config.js'
+            || tpath === '/interface_config.js'
             || tpath.startsWith('/css/')
             || tpath.startsWith('/doc/')
             || tpath.startsWith('/fonts/')
@@ -287,6 +290,10 @@ function getDevServerConfig() {
         host: 'localhost',
         hot: true,
         proxy: [
+            {
+                context: [ '/api/v1' ],
+                target: guestRoomValidationProxyTarget
+            },
             {
                 context: [ '/' ],
                 bypass: devServerProxyBypass,
