@@ -22,7 +22,7 @@ import {
     reloadWithStoredParams
 } from './actions.any';
 import { getDefaultURL, getName } from './functions.web';
-import { validateGuestRoom } from './guestRoomValidation';
+import { joinGuestRoom } from './guestRoomValidation';
 import logger from './logger';
 import { IStore } from './types';
 
@@ -99,7 +99,7 @@ export function appNavigate(uri?: string) {
                 || 'https://meet-api.famenetworks.net/api/v1';
 
             try {
-                const validation = await validateGuestRoom(
+                const validation = await joinGuestRoom(
                     validationApiBaseUrl,
                     room,
                     config.guestRoomValidationTimeoutMs);
@@ -109,7 +109,7 @@ export function appNavigate(uri?: string) {
                 logger.warn('Guest room validation rejected the meeting link', error);
                 dispatch(showErrorNotification({
                     description: error instanceof Error ? error.message : 'This meeting link is unavailable.',
-                    title: 'Unable to join meeting'
+                    title: error instanceof Error && error.message === 'Room is full' ? 'Seat is full' : 'Unable to join meeting'
                 }));
                 dispatch(setRoom(undefined));
 
