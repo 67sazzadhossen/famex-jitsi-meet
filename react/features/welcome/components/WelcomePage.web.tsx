@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { isMobileBrowser } from '../../base/environment/utils';
 import { translate } from '../../base/i18n/functions';
 import Icon from '../../base/icons/components/Icon';
-import { IconPhoneRinging, IconWarning } from '../../base/icons/svg';
+import { IconWarning } from '../../base/icons/svg';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.web';
 import CalendarList from '../../calendar-sync/components/CalendarList.web';
 import RecentList from '../../recent-list/components/RecentList.web';
@@ -185,7 +185,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {ReactElement|null}
      */
     override render() {
-        const { t } = this.props;
         const { DISPLAY_WELCOME_FOOTER } = interfaceConfig;
         const footerClassName = DISPLAY_WELCOME_FOOTER ? 'with-footer' : 'without-footer';
 
@@ -195,41 +194,15 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                 id = 'welcome_page'>
                 <nav className = 'welcome-navbar'>
                     <div className = 'welcome-navbar-content'>
-                        <a
-                            aria-label = 'Fame IT Networks home'
-                            className = 'welcome-navbar-logo'
-                            href = 'https://famenetworks.net/'>
+                        <div className = 'welcome-navbar-logo'>
                             <img
-                                alt = 'Fame IT Networks'
+                                alt = 'Fin'
                                 src = 'https://famenetworks.net/logo.svg' />
-                        </a>
-                        <div className = 'welcome-navbar-actions'>
-                            <a
-                                className = 'welcome-navbar-phone'
-                                href = 'tel:4696611200'>
-                                <span className = 'welcome-navbar-phone-icon'>
-                                    <Icon src = { IconPhoneRinging } />
-                                </span>
-                                <span>469-661-1200</span>
-                            </a>
-                            <a
-                                className = 'welcome-navbar-quote'
-                                href = 'https://famenetworks.net/contact'>
-                                Get a Quote
-                            </a>
                         </div>
                     </div>
                 </nav>
                 <div className = 'header'>
                     <div className = 'header-image' />
-                    <div className = 'header-container'>
-                        <h1 className = 'header-text-title'>
-                            Fame It Networks
-                        </h1>
-                        <span className = 'header-text-subtitle'>
-                            {t('welcomepage.headerSubtitle')}
-                        </span>
-                    </div>
                 </div>
                 {DISPLAY_WELCOME_FOOTER && this._renderFooter()}
             </div>

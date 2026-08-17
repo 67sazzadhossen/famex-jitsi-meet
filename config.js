@@ -27,7 +27,7 @@ var enableJaaS = false;
 var config = {
     // Required for guest meeting links. The visible URL contains the public room UUID;
     // only a successful backend validation resolves it to the private Jitsi room name.
-    guestRoomValidationApiBaseUrl: 'https://meet-api.famenetworks.net/api/v1',
+    guestRoomValidationApiBaseUrl: 'https://meet-api.famenetworks.net:8443/api/v1',
     guestRoomValidationTimeoutMs: 8000,
 
     // Connection
@@ -51,10 +51,10 @@ var config = {
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: 'https://meet.famenetworks.net/' + subdir + 'http-bind',
+    bosh: 'https://meet.famenetworks.net:8443/' + subdir + 'http-bind',
 
     // Websocket URL (XMPP)
-    websocket: 'wss://meet.famenetworks.net/' + subdir + 'xmpp-websocket',
+    websocket: 'wss://meet.famenetworks.net:8443/' + subdir + 'xmpp-websocket',
 
     // websocketKeepAliveUrl: 'https://jitsi-meet.example.com/' + subdir + '_unlock',
 
@@ -1317,7 +1317,7 @@ var config = {
     // DEPRECATED! Use deeplinking.disabled instead.
     // If true, any checks to handoff to another application will be prevented
     // and instead the app will continue to display in the current browser.
-    // disableDeepLinking: false,
+    disableDeepLinking: true,
 
     // The deeplinking config.
     // deeplinking: {

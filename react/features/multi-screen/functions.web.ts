@@ -383,7 +383,7 @@ function awaitSecondScreenLoad(win: Window): Promise<SecondScreenLoadResult> {
 function buildWindow(win: Window): HTMLElement {
     const doc = win.document;
 
-    doc.title = 'Jitsi Meet';
+    doc.title = 'Video Call';
     Object.assign(doc.documentElement.style, { height: '100%' });
 
     // The popup does not load the app's global stylesheet, so set the base

@@ -96,7 +96,7 @@ export function appNavigate(uri?: string) {
             // Keep guest validation on the platform API even if a stale or
             // incomplete runtime config is served by the web host.
             const validationApiBaseUrl = config?.guestRoomValidationApiBaseUrl
-                || 'https://meet-api.famenetworks.net/api/v1';
+                || 'https://meet-api.famenetworks.net:8443/api/v1';
 
             try {
                 const validation = await joinGuestRoom(
