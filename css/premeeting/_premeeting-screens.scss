@@ -80,8 +80,11 @@
 
     #new-toolbox {
         bottom: 0;
+        box-sizing: border-box;
+        max-width: 100%;
         position: relative;
         transition: none;
+        width: 100%;
 
         .toolbox-content {
             margin-bottom: 4px;
@@ -100,7 +103,38 @@
         .toolbox-content-wrapper,
         .toolbox-content-items {
             box-sizing: border-box;
-            width: auto;
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 720px) {
+        #new-toolbox {
+            padding-right: max(4px, env(safe-area-inset-right));
+            padding-left: max(4px, env(safe-area-inset-left));
+
+            .toolbox-content-items {
+                gap: 4px;
+                justify-content: space-evenly;
+                overflow: hidden;
+
+                > * {
+                    flex-shrink: 1;
+                    min-width: 0;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 340px) {
+        #new-toolbox {
+            padding-right: max(2px, env(safe-area-inset-right));
+            padding-left: max(2px, env(safe-area-inset-left));
+
+            .toolbox-content-items {
+                gap: 2px;
+                padding: 4px 0;
+            }
         }
     }
 

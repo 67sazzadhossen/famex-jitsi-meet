@@ -241,7 +241,9 @@ export default function Toolbox({
         toolbarButtons: toolbarButtonsToUse,
         // Reserve room for the overflow and hang-up controls on narrow screens.
         // Without this allowance the hang-up button can be pushed outside the viewport.
-        clientWidth: isMobile || isNarrowLayout ? Math.max(videoSpaceWidth - 96, 0) : videoSpaceWidth,
+        clientWidth: isMobile || isNarrowLayout
+            ? Math.max(videoSpaceWidth - (videoSpaceWidth <= 360 ? 144 : 96), 0)
+            : videoSpaceWidth,
         jwtDisabledButtons,
         mainToolbarButtonsThresholds
     });

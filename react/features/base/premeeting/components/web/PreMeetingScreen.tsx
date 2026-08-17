@@ -105,7 +105,9 @@ interface IProps {
 const useStyles = makeStyles()(theme => {
     return {
         container: {
-            height: '100%',
+            height: '100dvh',
+            minHeight: '100%',
+            overflow: 'hidden',
             position: 'absolute',
             inset: '0 0 0 0',
             display: 'flex',
@@ -130,7 +132,10 @@ const useStyles = makeStyles()(theme => {
 
             '@media (max-width: 720px)': {
                 height: 'auto',
-                margin: '0 auto'
+                maxHeight: '55dvh',
+                margin: '0 auto',
+                overflowY: 'auto',
+                width: '100%'
             },
 
             // mobile phone landscape
@@ -141,6 +146,10 @@ const useStyles = makeStyles()(theme => {
 
             '@media (max-width: 400px)': {
                 padding: '16px'
+            },
+
+            '@media (max-width: 340px)': {
+                padding: '10px 8px max(8px, env(safe-area-inset-bottom))'
             }
         },
         contentControls: {
@@ -159,6 +168,14 @@ const useStyles = makeStyles()(theme => {
             '& > *': {
                 width: '100%',
                 boxSizing: 'border-box'
+            },
+
+            '@media (max-width: 420px)': {
+                padding: '0 16px'
+            },
+
+            '@media (max-width: 340px)': {
+                padding: '0 8px'
             }
         },
         title: {
@@ -315,4 +332,3 @@ function mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
 }
 
 export default connect(mapStateToProps)(PreMeetingScreen);
-
