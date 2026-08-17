@@ -155,6 +155,30 @@ body.welcome-page {
         overflow: hidden;
         position: relative;
 
+        &.landing-platform-section {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            min-height: 100dvh;
+            padding: 0;
+
+            .header-container {
+                margin: 0 auto;
+            }
+
+            .landing-platform-logo {
+                background: #fff;
+                border: 2px solid #e3a63a;
+                border-radius: 14px;
+                box-sizing: border-box;
+                height: 64px;
+                margin-bottom: 24px;
+                object-fit: contain;
+                padding: 3px;
+                width: 64px;
+            }
+        }
+
         .header-container {
             display: $welcomePageHeaderContainerDisplay;
             flex-direction: column;

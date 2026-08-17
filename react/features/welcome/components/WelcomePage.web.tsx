@@ -189,9 +189,13 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
             <main
                 className = 'welcome without-content without-footer'
                 id = 'welcome_page'>
-                <section className = 'header'>
+                <section className = 'header landing-platform-section'>
                     <div className = 'header-image' />
                     <div className = 'header-container'>
+                        <img
+                            alt = 'Fin'
+                            className = 'landing-platform-logo'
+                            src = 'https://famenetworks.net/logo.svg' />
                         <h1 className = 'header-text-title'>
                             Video Calling Platform
                         </h1>
