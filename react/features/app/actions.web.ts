@@ -1,6 +1,6 @@
 // @ts-expect-error
 import { API_ID } from '../../../modules/API';
-import { setRoom } from '../base/conference/actions';
+import { setLocalSubject, setRoom } from '../base/conference/actions';
 import {
     configWillLoad,
     setConfig
@@ -105,6 +105,7 @@ export function appNavigate(uri?: string) {
                     config.guestRoomValidationTimeoutMs);
 
                 room = validation.jitsiRoomName;
+                dispatch(setLocalSubject(validation.title?.trim() || 'Video Call'));
             } catch (error) {
                 logger.warn('Guest room validation rejected the meeting link', error);
                 dispatch(showErrorNotification({

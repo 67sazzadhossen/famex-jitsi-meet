@@ -185,27 +185,19 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {ReactElement|null}
      */
     override render() {
-        const { DISPLAY_WELCOME_FOOTER } = interfaceConfig;
-        const footerClassName = DISPLAY_WELCOME_FOOTER ? 'with-footer' : 'without-footer';
-
         return (
-            <div
-                className = { `welcome without-content ${footerClassName}` }
+            <main
+                className = 'welcome without-content without-footer'
                 id = 'welcome_page'>
-                <nav className = 'welcome-navbar'>
-                    <div className = 'welcome-navbar-content'>
-                        <div className = 'welcome-navbar-logo'>
-                            <img
-                                alt = 'Fin'
-                                src = 'https://famenetworks.net/logo.svg' />
-                        </div>
-                    </div>
-                </nav>
-                <div className = 'header'>
+                <section className = 'header'>
                     <div className = 'header-image' />
-                </div>
-                {DISPLAY_WELCOME_FOOTER && this._renderFooter()}
-            </div>
+                    <div className = 'header-container'>
+                        <h1 className = 'header-text-title'>
+                            Video Calling Platform
+                        </h1>
+                    </div>
+                </section>
+            </main>
 
         );
     }
