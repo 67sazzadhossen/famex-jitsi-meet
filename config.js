@@ -25,6 +25,8 @@ if (subdomain.startsWith('<!--')) {
 var enableJaaS = false;
 
 var config = {
+    // API used by the landing-page company-admin login and room dashboard.
+    adminApiBaseUrl: 'https://meet-api.famenetworks.net:8443/api/v1',
     // Required for guest meeting links. The visible URL contains the public room UUID;
     // only a successful backend validation resolves it to the private Jitsi room name.
     guestRoomValidationApiBaseUrl: 'https://meet-api.famenetworks.net:8443/api/v1',

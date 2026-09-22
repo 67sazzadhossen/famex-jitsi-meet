@@ -10,6 +10,7 @@ import CalendarList from '../../calendar-sync/components/CalendarList.web';
 import RecentList from '../../recent-list/components/RecentList.web';
 
 import { AbstractWelcomePage, IProps, _mapStateToProps } from './AbstractWelcomePage';
+import AdminRoomLanding from './AdminRoomLanding';
 import Tabs from './Tabs';
 
 /**
@@ -185,25 +186,10 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {ReactElement|null}
      */
     override render() {
-        return (
-            <main
-                className = 'welcome without-content without-footer'
-                id = 'welcome_page'>
-                <section className = 'header landing-platform-section'>
-                    <div className = 'header-image' />
-                    <div className = 'header-container'>
-                        <img
-                            alt = 'Fin'
-                            className = 'landing-platform-logo'
-                            src = 'https://famenetworks.net/logo.svg' />
-                        <h1 className = 'header-text-title'>
-                            Video Calling Platform
-                        </h1>
-                    </div>
-                </section>
-            </main>
+        const apiBaseUrl = (config as typeof config & { adminApiBaseUrl?: string; }).adminApiBaseUrl
+            || 'https://meet-api.famenetworks.net:8443/api/v1';
 
-        );
+        return <AdminRoomLanding apiBaseUrl = { apiBaseUrl } />;
     }
 
     /**

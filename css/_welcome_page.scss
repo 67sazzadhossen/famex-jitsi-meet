@@ -3,6 +3,393 @@ body.welcome-page {
     overflow: auto;
 }
 
+.admin-room-landing {
+    background: #f4f7fb;
+    color: #15324b;
+
+    button,
+    input {
+        font: inherit;
+    }
+
+    button,
+    a {
+        transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    button:disabled {
+        cursor: not-allowed;
+        opacity: 0.62;
+    }
+
+    .welcome-navbar {
+        box-shadow: 0 8px 28px rgba(4, 28, 51, 0.16);
+        height: 76px;
+    }
+
+    .welcome-navbar-brand,
+    .welcome-navbar-user {
+        align-items: center;
+        color: #fff;
+        display: flex;
+        font-size: 17px;
+        font-weight: 750;
+        gap: 12px;
+        text-decoration: none;
+    }
+
+    .welcome-navbar-brand img {
+        background: #fff;
+        border: 2px solid #e3a63a;
+        border-radius: 11px;
+        height: 44px;
+        object-fit: contain;
+        padding: 2px;
+        width: 44px;
+    }
+
+    .welcome-navbar-login,
+    .welcome-navbar-user button,
+    .admin-room-hero-login {
+        background: #08a4d8;
+        border: 0;
+        border-radius: 9px;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 750;
+        padding: 13px 20px;
+    }
+
+    .welcome-navbar-user button {
+        background: rgba(255, 255, 255, 0.12);
+        padding: 10px 15px;
+    }
+
+    .landing-platform-section {
+        min-height: calc(100dvh - 76px) !important;
+
+        .header-container {
+            margin: 0 auto;
+        }
+    }
+
+    .admin-room-eyebrow {
+        color: #0b9dcc;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+
+    .header .admin-room-eyebrow {
+        color: #ffb000;
+        margin-bottom: 14px;
+    }
+
+    .admin-room-hero-login {
+        font-size: 16px;
+        margin-top: 8px;
+        padding: 15px 24px;
+    }
+}
+
+.admin-room-dashboard {
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 58px 22px 80px;
+    width: 100%;
+}
+
+.admin-room-dashboard-heading {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 28px;
+
+    h1 {
+        color: #123a5a;
+        font-size: 36px;
+        line-height: 1.15;
+        margin: 8px 0 8px;
+    }
+
+    p {
+        color: #5e7181;
+        margin: 0;
+    }
+}
+
+.admin-room-create-form {
+    align-items: end;
+    background: #fff;
+    border: 1px solid #dce6ee;
+    border-radius: 16px;
+    box-shadow: 0 12px 38px rgba(17, 58, 90, 0.08);
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1.4fr 1fr 0.65fr auto;
+    padding: 22px;
+
+    label,
+    input {
+        display: block;
+        width: 100%;
+    }
+
+    label {
+        color: #334f65;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    input {
+        border: 1px solid #cbd9e3;
+        border-radius: 8px;
+        box-sizing: border-box;
+        color: #18384f;
+        margin-top: 8px;
+        min-height: 46px;
+        padding: 10px 12px;
+    }
+
+    button {
+        background: #08a4d8;
+        border: 0;
+        border-radius: 9px;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 750;
+        min-height: 46px;
+        padding: 0 20px;
+    }
+}
+
+.admin-room-error {
+    background: #fff0f0;
+    border: 1px solid #ffc9c9;
+    border-radius: 8px;
+    color: #b42318;
+    margin: 0 0 18px;
+    padding: 12px 14px;
+}
+
+.admin-room-list-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 42px 0 16px;
+
+    h2 {
+        color: #123a5a;
+        font-size: 22px;
+        margin: 0;
+    }
+
+    span {
+        color: #708392;
+        font-size: 13px;
+    }
+}
+
+.admin-room-list {
+    display: grid;
+    gap: 12px;
+}
+
+.admin-room-card {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    padding: 19px 20px;
+
+    h3 {
+        color: #18384f;
+        font-size: 17px;
+        margin: 7px 0 6px;
+    }
+
+    p {
+        color: #718391;
+        font-size: 13px;
+        margin: 3px 0 0;
+    }
+}
+
+.admin-room-status {
+    background: #e6f7ef;
+    border-radius: 999px;
+    color: #137a4a;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+}
+
+.admin-room-status--cancelled,
+.admin-room-status--expired {
+    background: #edf0f2;
+    color: #697984;
+}
+
+.admin-room-card-actions {
+    display: flex;
+    gap: 9px;
+
+    button,
+    a {
+        border: 1px solid #bed1de;
+        border-radius: 8px;
+        color: #17668b;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 750;
+        padding: 10px 14px;
+        text-decoration: none;
+    }
+
+    button {
+        background: #edf8fc;
+    }
+}
+
+.admin-room-empty {
+    background: #fff;
+    border: 1px dashed #bdd0dc;
+    border-radius: 12px;
+    color: #718391;
+    padding: 28px;
+    text-align: center;
+}
+
+.admin-login-backdrop {
+    align-items: center;
+    background: rgba(3, 20, 35, 0.72);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 18px;
+    position: fixed;
+    z-index: 1000;
+}
+
+.admin-login-dialog {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+    box-sizing: border-box;
+    max-width: 430px;
+    padding: 34px;
+    position: relative;
+    width: 100%;
+
+    h2 {
+        color: #123a5a;
+        font-size: 28px;
+        margin: 8px 0;
+    }
+
+    > p {
+        color: #687c8c;
+        margin: 0 0 24px;
+    }
+
+    label,
+    input {
+        display: block;
+        width: 100%;
+    }
+
+    label {
+        color: #334f65;
+        font-size: 13px;
+        font-weight: 750;
+        margin-top: 15px;
+    }
+
+    input {
+        border: 1px solid #cbd9e3;
+        border-radius: 8px;
+        box-sizing: border-box;
+        margin-top: 7px;
+        min-height: 46px;
+        padding: 10px 12px;
+    }
+
+    form > button {
+        background: #08a4d8;
+        border: 0;
+        border-radius: 9px;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 750;
+        margin-top: 22px;
+        min-height: 48px;
+        width: 100%;
+    }
+}
+
+.admin-login-close {
+    background: transparent;
+    border: 0;
+    color: #738492;
+    cursor: pointer;
+    font-size: 26px;
+    line-height: 1;
+    padding: 8px;
+    position: absolute;
+    right: 14px;
+    top: 12px;
+}
+
+@media (max-width: 900px) {
+    .admin-room-create-form {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-room-landing {
+        .welcome-navbar-brand span,
+        .welcome-navbar-user > span {
+            display: none;
+        }
+
+        .landing-platform-section {
+            min-height: calc(100dvh - 68px) !important;
+        }
+    }
+
+    .admin-room-dashboard {
+        padding: 38px 14px 60px;
+    }
+
+    .admin-room-dashboard-heading h1 {
+        font-size: 30px;
+    }
+
+    .admin-room-create-form {
+        grid-template-columns: 1fr;
+        padding: 17px;
+    }
+
+    .admin-room-card {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .admin-room-card-actions a,
+    .admin-room-card-actions button {
+        box-sizing: border-box;
+        flex: 1;
+        text-align: center;
+    }
+}
+
 .welcome {
     background-image: $welcomePageBackground;
     background-color: #fff;
