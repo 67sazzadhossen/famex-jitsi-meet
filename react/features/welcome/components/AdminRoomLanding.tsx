@@ -33,6 +33,10 @@ const getErrorMessage = async (response: Response) => {
     return body?.message || 'The request could not be completed.';
 };
 
+const getRequestErrorMessage = (error: unknown, fallback: string) => error instanceof DOMException && error.name === 'AbortError'
+    ? 'The server took too long to respond. Please try again.'
+    : error instanceof Error && error.message ? error.message : fallback;
+
 const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
     const [ accessToken, setAccessToken ] = useState('');
     const [ copiedRoomId, setCopiedRoomId ] = useState('');
@@ -46,6 +50,8 @@ const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
 
     const apiRequest = useCallback(async (path: string, init: RequestInit = {}, token = accessToken) => {
         const headers = new Headers(init.headers);
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 8000);
 
         headers.set('Accept', 'application/json');
         if (init.body) {
@@ -55,11 +61,16 @@ const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
             headers.set('Authorization', `Bearer ${token}`);
         }
 
-        return fetch(`${apiBaseUrl.replace(/\/$/, '')}${path}`, {
-            ...init,
-            credentials: 'include',
-            headers
-        });
+        try {
+            return await fetch(`${apiBaseUrl.replace(/\/$/, '')}${path}`, {
+                ...init,
+                credentials: 'include',
+                headers,
+                signal: controller.signal
+            });
+        } finally {
+            window.clearTimeout(timeout);
+        }
     }, [ accessToken, apiBaseUrl ]);
 
     const loadRooms = useCallback(async (token: string) => {
@@ -129,7 +140,7 @@ const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
             setLoginOpen(false);
             await loadRooms(body.data.accessToken);
         } catch (loginError) {
-            setError(loginError instanceof Error ? loginError.message : 'Login failed.');
+            setError(getRequestErrorMessage(loginError, 'Login failed.'));
         } finally {
             setLoggingIn(false);
         }
@@ -162,7 +173,7 @@ const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
             setRooms(current => [ body.data, ...current ]);
             formElement.reset();
         } catch (createError) {
-            setError(createError instanceof Error ? createError.message : 'Room creation failed.');
+            setError(getRequestErrorMessage(createError, 'Room creation failed.'));
         } finally {
             setCreating(false);
         }
