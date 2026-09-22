@@ -114,7 +114,6 @@ const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
             const response = await apiRequest('/auth/company-admin/login', {
                 body: JSON.stringify({
                     password: form.get('password'),
-                    tenantSlug: form.get('tenantSlug'),
                     username: form.get('username')
                 }),
                 method: 'POST'
@@ -334,11 +333,6 @@ const AdminRoomLanding = ({ apiBaseUrl }: IProps) => {
                             className = 'admin-room-error'
                             role = 'alert'>{error}</div>}
                         <form onSubmit = { login }>
-                            <label>Company slug<input
-                                autoComplete = 'organization'
-                                name = 'tenantSlug'
-                                required = { true }
-                                type = 'text' /></label>
                             <label>Username<input
                                 autoComplete = 'username'
                                 name = 'username'
