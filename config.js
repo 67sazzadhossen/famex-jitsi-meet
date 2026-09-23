@@ -26,10 +26,10 @@ var enableJaaS = false;
 
 var config = {
     // API used by the landing-page company-admin login and room dashboard.
-    adminApiBaseUrl: 'https://meet-api.famenetworks.net:8443/api/v1',
+    adminApiBaseUrl: 'https://meet-api.famenetworks.net/api/v1',
     // Required for guest meeting links. The visible URL contains the public room UUID;
     // only a successful backend validation resolves it to the private Jitsi room name.
-    guestRoomValidationApiBaseUrl: 'https://meet-api.famenetworks.net:8443/api/v1',
+    guestRoomValidationApiBaseUrl: 'https://meet-api.famenetworks.net/api/v1',
     guestRoomValidationTimeoutMs: 8000,
 
     // Connection
@@ -53,10 +53,10 @@ var config = {
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: 'https://meet.famenetworks.net:8443/' + subdir + 'http-bind',
+    bosh: 'https://meet.famenetworks.net/' + subdir + 'http-bind',
 
     // Websocket URL (XMPP)
-    websocket: 'wss://meet.famenetworks.net:8443/' + subdir + 'xmpp-websocket',
+    websocket: 'wss://meet.famenetworks.net/' + subdir + 'xmpp-websocket',
 
     // websocketKeepAliveUrl: 'https://jitsi-meet.example.com/' + subdir + '_unlock',
 

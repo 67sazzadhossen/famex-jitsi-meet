@@ -187,7 +187,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      */
     override render() {
         const apiBaseUrl = (config as typeof config & { adminApiBaseUrl?: string; }).adminApiBaseUrl
-            || 'https://meet-api.famenetworks.net:8443/api/v1';
+            || 'https://meet-api.famenetworks.net/api/v1';
 
         return <AdminRoomLanding apiBaseUrl = { apiBaseUrl } />;
     }

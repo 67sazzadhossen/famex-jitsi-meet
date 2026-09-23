@@ -14,7 +14,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const devServerProxyTarget
     = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://alpha.jitsi.net';
 const guestRoomValidationProxyTarget
-    = process.env.GUEST_ROOM_VALIDATION_PROXY_TARGET || 'https://meet-api.famenetworks.net:8443';
+    = process.env.GUEST_ROOM_VALIDATION_PROXY_TARGET || 'https://meet-api.famenetworks.net';
 
 /**
  * Build a Performance configuration object for the given size.
